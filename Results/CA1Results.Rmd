@@ -6,6 +6,7 @@ attach(ca1)
 library(psych) # For descriptive statistics
 library(survival) # For Survival Analyses
 source("../standardAnalysis.R")
+source("../SurvivalPlot.R")
 ```
 ## Describing the Data
 ```{r describe}
@@ -67,27 +68,17 @@ ca1.recurrence <- survfit(surv.recurrence ~ ca1.positive.10, data = ca1)
 # Log-rank test
 survdiff(surv.recurrence ~ pt.biopsy)
 # Survival curves
-plot(pt1.recurrence, cex = 2, main = "pT at Biopsy", cex.main = 1.75,
-     xlab = "Follow-Up (Months)", ylab = "Survival Function", cex.lab = 1.5,
-     col = c(1,2), mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.02", x = 17, y = 0.01, cex = 1.25)
-legend("topright", c("pT1a", "pT1b"), pch = c(2,0), lty = c(2,1),
-       col = c(1,2), bty = "n", cex = 1.25)
+survival.plot(x = pt1.recurrence, title = "pT at Biopsy and Tumor Recurrence",
+p = 0.02, levels = c("pT1a", "pT1b"))
 ```
-
 
 ### CIS and Tumor Recurrence (Figure 2B)
 ```{r Figure2B, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.recurrence ~ cis.biopsy)
 # Survival curves
-plot(cis.recurrence, cex = 2, main = "CIS at Biopsy", cex.main = 1.75,
-     xlab = "Follow-Up (Months)", ylab = "Survival Function", cex.lab = 1.5,
-     col =c(1,2), mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.32", x = 17, y = 0.01, cex = 1.25)
-legend("topright", c("Absent", "Present"), pch = c(2,0), lty = c(2,1),
-       col = c(1,2), bty = "n", cex = 1.25)
-
+survival.plot(x = cis.recurrence, title = "CIS at Biopsy and Tumor Recurrence",
+p = 0.32, levels = c("Absent", "Present"))
 ```
 
 ### Initial Treatment and Tumor Recurrence (Figure 2C)
@@ -95,12 +86,7 @@ legend("topright", c("Absent", "Present"), pch = c(2,0), lty = c(2,1),
 # Log-rank test
 survdiff(surv.recurrence ~ treatment)
 # Survival curves
-plot(treatment.recurrence, cex = 2, main = "Initial Treatment", cex.main = 1.75,
-        xlab = "Follow-Up (Months)", ylab = "Survival Function", cex.lab = 1.5,
-        col =c(1,2,4), mark = c(2,0,5), lty = c(2,1,3))
-text("P (log-rank test) = 0.47", x = 17, y = 0.01, cex = 1.25)
-legend("topright", c("TURB+BCG", "TURB+MC", "TURB alone"), pch = c(2,0,5),
-        lty = c(2,1,3), col = c(1,2,4), bty = "n", cex = 1.25)
+survival.plot(x = treatment.recurrence, title = "Initial Treatment at Biopsy and Tumor Recurrence", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
 ```
 
 ### Cyclin A1 and Tumor Recurrence (Figure 2D)
@@ -108,78 +94,83 @@ legend("topright", c("TURB+BCG", "TURB+MC", "TURB alone"), pch = c(2,0,5),
 # Log-rank test
 survdiff(surv.recurrence ~ ca1.positive.10)
 # Survival curves
-plot(ca1.recurrence, cex = 2, main = "Cyclin A1", cex.main = 1.75, col =c(1,2),
-        xlab = "Follow-Up (Months)", ylab = "Survival Function", cex.lab = 1.5,   
-        mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.68", x = 17, y = 0.01, cex = 1.25)
-legend("topright", c("Negative", "Positive"), pch = c(2,0), lty = c(2,1),
-        col = c(1,2), bty = "n", cex = 1.25)
+survival.plot(x = ca1.recurrence, title = "Cyclin A1 and Tumor Recurrence", p = 0.68, position = "topright", levels = c("Negative", "Positive"))
 ```
 
 ### Tumor Recurrence (All Figures Combined)
-```{r Figure2AD, fig.height = 9, fig.width = 11}
+```{r Figure2AD, fig.height = 11, fig.width = 13}
 par(mfrow = c(2,2))
 # Figure 2A
-plot(pt1.recurrence, cex = 2, main = "pT at Biopsy", cex.main = 1.75,
-     col =c(1,2), mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.02", x = 20, y = 0.01, cex = 1.25)
-legend("topright", c("pT1a", "pT1b"), pch = c(2,0), lty = c(2,1),
-       col = c(1,2), bty = "n", cex = 1.25)
+survival.plot(x = pt1.recurrence, title = "pT at Biopsy and Tumor Recurrence",
+p = 0.02, levels = c("pT1a", "pT1b"))
 # Figure 2B
-plot(cis.recurrence, cex = 2, main = "CIS at Biopsy", cex.main = 1.75,
-     col =c(1,2), mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.32", x = 20, y = 0.01, cex = 1.25)
-legend("topright", c("Absent", "Present"), pch = c(2,0), lty = c(2,1),
-       col = c(1,2), bty = "n", cex = 1.25)
+survival.plot(x = cis.recurrence, title = "CIS at Biopsy and Tumor Recurrence",
+p = 0.32, levels = c("Absent", "Present"))
 # Figure 2C
-plot(treatment.recurrence, cex = 2, main = "Initial Treatment", cex.main = 1.75,
-        col =c(1,2,4), mark = c(2,0,5), lty = c(2,1,3))
-text("P (log-rank test) = 0.47", x = 20, y = 0.01, cex = 1.25)
-legend("topright", c("TURB+BCG", "TURB+MC", "TURB alone"), pch = c(2,0,5),
-        lty = c(2,1,3), col = c(1,2,4), bty = "n", cex = 1.25)
+survival.plot(x = treatment.recurrence, title = "Initial Treatment at Biopsy and Tumor Recurrence", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
 # Figure 2D
-plot(ca1.recurrence, cex = 2, main = "Cyclin A1", cex.main = 1.75, col =c(1,2),
-        mark = c(2,0), lty = c(2,1))
-text("P (log-rank test) = 0.68", x = 20, y = 0.01, cex = 1.25)
-legend("topright", c("Negative", "Positive"), pch = c(2,0), lty = c(2,1),
-        col = c(1,2), bty = "n", cex = 1.25)
+survival.plot(x = ca1.recurrence, title = "Cyclin A1 and Tumor Recurrence", p = 0.68, position = "topright", levels = c("Negative", "Positive"))
 ```
 
-
 ## Estimating Survival Functions for Tumor Progression
-surv.progression <- with(ca1, Surv(time.event, progression)) # For tumor progression
-pt1.progression <- survfit(surv.progression ~ pt.biopsy, data = ca1) # pT1 and progression
-cis.progression <- survfit(surv.progression ~ cis.biopsy, data = ca1) # CIS and progression
-treatment.progression <- survfit(surv.progression ~ treatment, data = ca1) # Initial treatment and progression
-ca1.progression <- survfit(surv.progression ~ ca1.positive.10, data = ca1) # Cyclin A1 and progression
-### Figure 2E
-survdiff(surv.progression ~ pt.biopsy) # Log-rank test
-tiff("fig2e.tiff", 600, 450, pointsize = 16, compression = c("zip"))
-  plot(pt1.progression, main = "pT at Biopsy", cex.main = 1.75, col =c(1,2), mark = c(2,0), lty = c(2,1))
-  text("P (log-rank test) = 1.11e-06", x = 19, y = 0.01)
-  legend("topright", c("pT1a", "pT1b"), pch = c(2,0), lty = c(2,1), col = c(1,2), bty = "n")
-dev.off()
-### Figure 2F
-survdiff(surv.progression ~ cis.biopsy) # Log-rank test
-tiff("fig2f.tiff", 600, 450, pointsize = 16, compression = c("zip"))
-  plot(cis.progression, main = "CIS at Biopsy", cex.main = 1.75, col =c(1,2), mark = c(2,0), lty = c(2,1))
-  text("P (log-rank test) = 0.03", x = 17, y = 0.01)
-  legend("bottomright", c("Absent", "Present"), pch = c(2,0), lty = c(2,1), col = c(1,2), bty = "n")
-dev.off()
-### Figure 2G
-survdiff(surv.progression ~ treatment) # Log-rank test
-tiff("fig2g.tiff", 600, 450, pointsize = 16, compression = c("zip"))
-  plot(treatment.progression, main = "Initial Treatment", cex.main = 1.75, col =c(1,2,4), mark = c(2,0,5), lty = c(2,1,3))
-  text("P (log-rank test) = 0.47", x = 17, y = 0.01)
-  legend("topright", c("TURB+BCG", "TURB+MC", "TURB alone"), pch = c(2,0,5), lty = c(2,1,3), col = c(1,2,4), bty = "n")
-dev.off()
-### Figure 2H
-survdiff(surv.progression ~ ca1.positive.10) # Log-rank test
-tiff("fig2h.tiff", 600, 450, pointsize = 16, compression = c("zip"))
-  plot(ca1.progression, main = "Cyclin A1", cex.main = 1.75, col =c(1,2), mark = c(2,0), lty = c(2,1))
-  text("P (log-rank test) = 0.004", x = 17, y = 0.01)
-  legend("topright", c("Negative", "Positive"), pch = c(2,0), lty = c(2,1), col = c(1,2), bty = "n")
-dev.off()
+```{r SurvivalProgression}
+# For tumor progression
+surv.progression <- with(ca1, Surv(time.event, progression))
+# pT1 and progression
+pt1.progression <- survfit(surv.progression ~ pt.biopsy, data = ca1)
+# CIS and progression
+cis.progression <- survfit(surv.progression ~ cis.biopsy, data = ca1)
+# Initial treatment and progression
+treatment.progression <- survfit(surv.progression ~ treatment, data = ca1)
+# Cyclin A1 and progression
+ca1.progression <- survfit(surv.progression ~ ca1.positive.10, data = ca1)
+```
+
+### pT at Biopsy and Tumor Progression (Figure 2E)
+```{r Figure2E, fig.height = 7, fig.width = 9}
+# Log-rank test
+survdiff(surv.progression ~ pt.biopsy)
+# Survival curves
+survival.plot(x = pt1.progression, title = "pT at Biopsy and Tumor Progression", p = 1.11e-06, levels = c("pT1a", "pT1b"))
+```
+
+### CIS at Biopsy and Tumor Progression (Figure 2F)
+```{r Figure2F, fig.height = 7, fig.width = 9}
+# Log-rank test
+survdiff(surv.progression ~ cis.biopsy)
+# Survival curves
+survival.plot(x = cis.progression, title = "CIS at Biopsy and Tumor Progression", p = 0.03, levels = c("Absent", "Present"), position = "bottomright")
+```
+
+### Initial Treatment and Tumor Progression (Figure 2G)
+```{r Figure2G, fig.height = 7, fig.width = 9}
+# Log-rank test
+survdiff(surv.progression ~ treatment)
+# Survival curves
+survival.plot(x = treatment.progression, title = "Initial Treatment and Tumor Progression", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
+```
+
+### Cyclin A1 and Tumor Progression (Figure 2H)
+```{r Figure2H, fig.height = 7, fig.width = 9}
+# Log-rank test
+survdiff(surv.progression ~ ca1.positive.10)
+# Survival curves
+survival.plot(x = ca1.progression, title = "Cyclin A1 and Tumor Progression", p = 0.004, levels = c("Negative", "Positive"))
+```
+
+### Tumor Progression (All Figures Combined)
+```{r Figure2EH, fig.height = 11, fig.width = 13}
+par(mfrow = c(2,2))
+# Figure 2E
+survival.plot(x = pt1.progression, title = "pT at Biopsy and Tumor Progression", p = 1.11e-06, levels = c("pT1a", "pT1b"))
+# Figure 2F
+survival.plot(x = cis.progression, title = "CIS at Biopsy and Tumor Progression", p = 0.03, levels = c("Absent", "Present"), position = "bottomright")
+# Figure 2G
+survival.plot(x = treatment.progression, title = "Initial Treatment and Tumor Progression", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
+# Figure 2H
+survival.plot(x = ca1.progression, title = "Cyclin A1 and Tumor Progression", p = 0.004, levels = c("Negative", "Positive"))
+
+```
 
 ## Estimating Hazard Ratios for Tumor Recurrence
 cox.pt1.recurrence <- coxph(surv.recurrence ~ pt.biopsy, data = ca1) # pT1 and recurrence
@@ -187,6 +178,7 @@ cox.cis.recurrence <- coxph(surv.recurrence ~ cis.biopsy, data = ca1) # CIS and 
 cox.treatment.recurrence <- coxph(surv.recurrence ~ treatment, data = ca1) # Initial treatment and recurrence
 cox.ca1.recurrence <- coxph(surv.recurrence ~ ca1.positive.10, data = ca1) # Cyclin A1 and recurrence
 cox.ca1pt1.recurrence <- coxph(surv.recurrence ~ ca1.positive.10 + pt.biopsy, data = ca1) # Cyclin A1 & pT1 at Biopsy and recurrence
+
 
 ## Estimating Hazard Ratios for Tumor Progression
 cox.pt1.progression <- coxph(surv.progression ~ pt.biopsy, data = ca1) # pT1 and progression
