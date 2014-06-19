@@ -1,25 +1,21 @@
-## Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder
+## Data Analysis - Report
+
+The [ca1.csv](https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/ca1.csv) dataset was used for this data analysis, along with the R functions included in [StandardAnalysis.R](https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/StandardAnalysis.R) written by Alcides Chaux (CC BY-NC 4.0). Survival curves were plotted using the [SurvivalPlot.R](https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/SurvivalPlot.R) script. The analysis also required the `survival` library.
+
 * Opening & attaching dataset and loading functions & libraries
 
 ```r
 ca1 <- read.csv("../ca1.csv")
 attach(ca1)
+library(survival) # For Survival Analyses
 ```
 
 ```
-## The following objects are masked from ca1 (position 6):
-## 
-##     ca1.extension, ca1.extenstion.intensity, ca1.positive.0,
-##     ca1.positive.10, caseid, cis.biopsy, dx.final, dx.followup,
-##     follow.up, progression, pt.biopsy, recurrence,
-##     recurrence.groups, recurrence.more1, recurrence.number,
-##     time.event, treatment
+## Loading required package: splines
 ```
 
 ```r
-library(psych) # For descriptive statistics
-library(survival) # For Survival Analyses
-source("../standardAnalysis.R")
+source("../StandardAnalysis.R")
 source("../SurvivalPlot.R")
 ```
 ### Describing the Data

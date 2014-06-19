@@ -53,17 +53,17 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
-<div id="cyclin-a1-expression-in-pt1-urothelial-carcinoma-of-bladder" class="section level2">
-<h2>Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder</h2>
+<div id="data-analysis---report" class="section level2">
+<h2>Data Analysis - Report</h2>
+<p>The <a href="https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/ca1.csv">ca1.csv</a> dataset was used for this data analysis, along with the R functions included in <a href="https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/StandardAnalysis.R">StandardAnalysis.R</a> written by Alcides Chaux (CC BY-NC 4.0). Survival curves were plotted using the <a href="https://github.com/alcideschaux/CyclinA1-pT1Bladder/blob/master/SurvivalPlot.R">SurvivalPlot.R</a> script. The analysis also required the <code>survival</code> library.</p>
 <ul>
 <li>Opening &amp; attaching dataset and loading functions &amp; libraries</li>
 </ul>
 <pre class="r"><code>ca1 &lt;- read.csv(&quot;../ca1.csv&quot;)
 attach(ca1)
-library(psych) # For descriptive statistics
 library(survival) # For Survival Analyses</code></pre>
 <pre><code>## Loading required package: splines</code></pre>
-<pre class="r"><code>source(&quot;../standardAnalysis.R&quot;)
+<pre class="r"><code>source(&quot;../StandardAnalysis.R&quot;)
 source(&quot;../SurvivalPlot.R&quot;)</code></pre>
 <div id="describing-the-data" class="section level3">
 <h3>Describing the Data</h3>
