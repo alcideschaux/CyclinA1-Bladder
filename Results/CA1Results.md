@@ -1,22 +1,24 @@
----
-output:
-  html_document: default
----
 ## Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder
 * Opening & attaching dataset and loading functions & libraries
 
 ```r
 ca1 <- read.csv("../ca1.csv")
 attach(ca1)
-library(psych) # For descriptive statistics
-library(survival) # For Survival Analyses
 ```
 
 ```
-## Loading required package: splines
+## The following objects are masked from ca1 (position 6):
+## 
+##     ca1.extension, ca1.extenstion.intensity, ca1.positive.0,
+##     ca1.positive.10, caseid, cis.biopsy, dx.final, dx.followup,
+##     follow.up, progression, pt.biopsy, recurrence,
+##     recurrence.groups, recurrence.more1, recurrence.number,
+##     time.event, treatment
 ```
 
 ```r
+library(psych) # For descriptive statistics
+library(survival) # For Survival Analyses
 source("../standardAnalysis.R")
 source("../SurvivalPlot.R")
 ```

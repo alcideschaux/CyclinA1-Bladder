@@ -1,7 +1,3 @@
----
-output:
-  html_document: default
----
 ## Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder
 * Opening & attaching dataset and loading functions & libraries
 ```{r open}
