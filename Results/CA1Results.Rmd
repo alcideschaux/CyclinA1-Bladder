@@ -1,5 +1,9 @@
-# Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder
-## Opening & attaching dataset and loading functions & libraries
+---
+output:
+  html_document: default
+---
+## Cyclin A1 Expression in pT1 Urothelial Carcinoma of Bladder
+* Opening & attaching dataset and loading functions & libraries
 ```{r open}
 ca1 <- read.csv("../ca1.csv")
 attach(ca1)
@@ -8,7 +12,7 @@ library(survival) # For Survival Analyses
 source("../standardAnalysis.R")
 source("../SurvivalPlot.R")
 ```
-## Describing the Data
+### Describing the Data
 ```{r describe}
 # pT1 at Biopsy
 table.prop(pt.biopsy)
@@ -30,7 +34,7 @@ descriptive(ca1.extension)
 table.prop(ca1.positive.10)
 ```
 
-# Table 1
+### Table 1: Cyclin A1 Immunohistochemical Expression in 149 Invasive High-Grade Urothelial Carcinomas by Pathologic Features and Outcome
 ```{r}
 # Cyclin A1 by pT at Biopsy
 compare.fisher(pt.biopsy, ca1.positive.10)
@@ -49,7 +53,8 @@ matrix(data = table1.adjusted, nrow = 4, ncol = 2,
                        c("Raw P values", "Adjusted P values")))
 ```
 
-## Estimating Survival Functions for Tumor Recurrence
+### Survival Plots for Tumor Recurrence
+* Estimating Survival Functions for Tumor Recurrence
 ```{r SurvivalRecurrence}
 # Defining survival object
 surv.recurrence <- with(ca1, Surv(time.event, recurrence))
@@ -63,7 +68,7 @@ treatment.recurrence <- survfit(surv.recurrence ~ treatment, data = ca1)
 ca1.recurrence <- survfit(surv.recurrence ~ ca1.positive.10, data = ca1)
 ```
 
-### pT Biopsy and Tumor Recurrence (Figure 2A)
+* pT Biopsy and Tumor Recurrence (Figure 2A)
 ```{r Figure2A, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.recurrence ~ pt.biopsy)
@@ -72,7 +77,7 @@ survival.plot(x = pt1.recurrence, title = "pT at Biopsy and Tumor Recurrence",
 p = 0.02, levels = c("pT1a", "pT1b"))
 ```
 
-### CIS and Tumor Recurrence (Figure 2B)
+* CIS and Tumor Recurrence (Figure 2B)
 ```{r Figure2B, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.recurrence ~ cis.biopsy)
@@ -81,7 +86,7 @@ survival.plot(x = cis.recurrence, title = "CIS at Biopsy and Tumor Recurrence",
 p = 0.32, levels = c("Absent", "Present"))
 ```
 
-### Initial Treatment and Tumor Recurrence (Figure 2C)
+* Initial Treatment and Tumor Recurrence (Figure 2C)
 ```{r Figure2C, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.recurrence ~ treatment)
@@ -89,7 +94,7 @@ survdiff(surv.recurrence ~ treatment)
 survival.plot(x = treatment.recurrence, title = "Initial Treatment at Biopsy and Tumor Recurrence", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
 ```
 
-### Cyclin A1 and Tumor Recurrence (Figure 2D)
+* Cyclin A1 and Tumor Recurrence (Figure 2D)
 ```{r Figure2D, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.recurrence ~ ca1.positive.10)
@@ -97,7 +102,7 @@ survdiff(surv.recurrence ~ ca1.positive.10)
 survival.plot(x = ca1.recurrence, title = "Cyclin A1 and Tumor Recurrence", p = 0.68, position = "topright", levels = c("Negative", "Positive"))
 ```
 
-### Tumor Recurrence (All Figures Combined)
+* Tumor Recurrence (All Figures Combined)
 ```{r Figure2AD, fig.height = 11, fig.width = 13}
 par(mfrow = c(2,2))
 # Figure 2A
@@ -112,7 +117,8 @@ survival.plot(x = treatment.recurrence, title = "Initial Treatment at Biopsy and
 survival.plot(x = ca1.recurrence, title = "Cyclin A1 and Tumor Recurrence", p = 0.68, position = "topright", levels = c("Negative", "Positive"))
 ```
 
-## Estimating Survival Functions for Tumor Progression
+### Survival Plots for Tumor Progression
+* Estimating Survival Functions for Tumor Progression
 ```{r SurvivalProgression}
 # For tumor progression
 surv.progression <- with(ca1, Surv(time.event, progression))
@@ -126,7 +132,7 @@ treatment.progression <- survfit(surv.progression ~ treatment, data = ca1)
 ca1.progression <- survfit(surv.progression ~ ca1.positive.10, data = ca1)
 ```
 
-### pT at Biopsy and Tumor Progression (Figure 2E)
+* pT at Biopsy and Tumor Progression (Figure 2E)
 ```{r Figure2E, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.progression ~ pt.biopsy)
@@ -134,7 +140,7 @@ survdiff(surv.progression ~ pt.biopsy)
 survival.plot(x = pt1.progression, title = "pT at Biopsy and Tumor Progression", p = 1.11e-06, levels = c("pT1a", "pT1b"))
 ```
 
-### CIS at Biopsy and Tumor Progression (Figure 2F)
+* CIS at Biopsy and Tumor Progression (Figure 2F)
 ```{r Figure2F, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.progression ~ cis.biopsy)
@@ -142,7 +148,7 @@ survdiff(surv.progression ~ cis.biopsy)
 survival.plot(x = cis.progression, title = "CIS at Biopsy and Tumor Progression", p = 0.03, levels = c("Absent", "Present"), position = "bottomright")
 ```
 
-### Initial Treatment and Tumor Progression (Figure 2G)
+* Initial Treatment and Tumor Progression (Figure 2G)
 ```{r Figure2G, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.progression ~ treatment)
@@ -150,7 +156,7 @@ survdiff(surv.progression ~ treatment)
 survival.plot(x = treatment.progression, title = "Initial Treatment and Tumor Progression", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
 ```
 
-### Cyclin A1 and Tumor Progression (Figure 2H)
+* Cyclin A1 and Tumor Progression (Figure 2H)
 ```{r Figure2H, fig.height = 7, fig.width = 9}
 # Log-rank test
 survdiff(surv.progression ~ ca1.positive.10)
@@ -158,7 +164,7 @@ survdiff(surv.progression ~ ca1.positive.10)
 survival.plot(x = ca1.progression, title = "Cyclin A1 and Tumor Progression", p = 0.004, levels = c("Negative", "Positive"))
 ```
 
-### Tumor Progression (All Figures Combined)
+* Tumor Progression (All Figures Combined)
 ```{r Figure2EH, fig.height = 11, fig.width = 13}
 par(mfrow = c(2,2))
 # Figure 2E
@@ -169,41 +175,73 @@ survival.plot(x = cis.progression, title = "CIS at Biopsy and Tumor Progression"
 survival.plot(x = treatment.progression, title = "Initial Treatment and Tumor Progression", p = 0.47, levels = c("TURB+BCG", "TURB+MC", "TURB alone"))
 # Figure 2H
 survival.plot(x = ca1.progression, title = "Cyclin A1 and Tumor Progression", p = 0.004, levels = c("Negative", "Positive"))
-
 ```
 
-## Estimating Hazard Ratios for Tumor Recurrence
-cox.pt1.recurrence <- coxph(surv.recurrence ~ pt.biopsy, data = ca1) # pT1 and recurrence
-cox.cis.recurrence <- coxph(surv.recurrence ~ cis.biopsy, data = ca1) # CIS and recurrence
-cox.treatment.recurrence <- coxph(surv.recurrence ~ treatment, data = ca1) # Initial treatment and recurrence
-cox.ca1.recurrence <- coxph(surv.recurrence ~ ca1.positive.10, data = ca1) # Cyclin A1 and recurrence
-cox.ca1pt1.recurrence <- coxph(surv.recurrence ~ ca1.positive.10 + pt.biopsy, data = ca1) # Cyclin A1 & pT1 at Biopsy and recurrence
+### pT Substaging and Cyclin A1 Expression in Predicting Tumor Recurrence and Tumor Progression
+First we create a new variable containing the 4 possible combinations of pT substage and cyclin A1 expression (i.e., pT1a/CycA1+, pT1a/CycA1-, pT1b/CycA1+, pT1b/CycA1-) and we plot the proportions of each level:
+```{r, echo = TRUE}
+ca1$pt.ca1[ca1$pt.biopsy == "pT1a" & ca1$ca1.positive.10 == "Positive"] <- "pT1a/CycA1+"
+ca1$pt.ca1[ca1$pt.biopsy == "pT1a" & ca1$ca1.positive.10 == "Negative"] <- "pT1a/CycA1-"
+ca1$pt.ca1[ca1$pt.biopsy == "pT1b" & ca1$ca1.positive.10 == "Positive"] <- "pT1b/CycA1+"
+ca1$pt.ca1[ca1$pt.biopsy == "pT1b" & ca1$ca1.positive.10 == "Negative"] <- "pT1b/CycA1-"
+table.prop(ca1$pt.ca1)
+```
+We then plot the survival curves for tumor recurrence and tumor progression considering these 4 levels.
 
+* Combined pT1 substaging and cyclin A1 expresion in predicting tumor recurrence
+```{r Figure3A, fig.height = 7, fig.width = 9}
+# Defining survival function
+ptca1.recurrence <- survfit(surv.recurrence ~ pt.ca1, data = ca1)
+# Log-rank test
+with(ca1, survdiff(surv.recurrence ~ pt.ca1))
+# Figure 3A
+survival.plot(x = ptca1.recurrence, title = "pT1 Substage and Cyclin A1 for Predicting \nTumor Recurrence", p = 0.014, levels = c("pT1a/CycA1-", "pT1a/CycA1+", "pT1b/CycA1-", "pT1b/CycA1+"))
+```
 
-## Estimating Hazard Ratios for Tumor Progression
-cox.pt1.progression <- coxph(surv.progression ~ pt.biopsy, data = ca1) # pT1 and progression
-cox.cis.progression <- coxph(surv.progression ~ cis.biopsy, data = ca1) # CIS and progression
-cox.treatment.progression <- coxph(surv.progression ~ treatment, data = ca1) # Initial treatment and progression
-cox.ca1.progression <- coxph(surv.progression ~ ca1.positive.10, data = ca1) # Cyclin A1 and progression
-cox.ca1pt1.progression <- coxph(surv.progression ~ ca1.positive.10 + pt.biopsy, data = ca1) # Cyclin A1 & pT1 at Biopsy and progression
+* Combined pT1 substaging and cyclin A1 expresion in predicting tumor progression
+```{r Figure3B, fig.height = 7, fig.width = 9}
+# Defining survival function
+ptca1.progression <- survfit(surv.progression ~ pt.ca1, data = ca1)
+# Log-rank test
+with(ca1, survdiff(surv.progression ~ pt.ca1))
+# Figure 3B
+survival.plot(x = ptca1.progression, title = "pT1 Substage and Cyclin A1 for Predicting \nTumor Progression", p = 7.7e-07, levels = c("pT1a/CycA1-", "pT1a/CycA1+", "pT1b/CycA1-", "pT1b/CycA1+"))
+```
 
-# Table 2
-# Tumor Recurrence
-summary(cox.pt1.recurrence) # pT1 and recurrence
-summary(cox.cis.recurrence) # CIS and recurrence
-summary(cox.treatment.recurrence) # Treatment and recurrence
-summary(cox.ca1.recurrence) # Cyclin A1 and recurrence
-summary(cox.ca1pt1.recurrence) # Cyclin A1 & pT1 and recurrence
-# Tumor Progression
-summary(cox.pt1.progression) # pT1 and progression
-summary(cox.cis.progression) # CIS and progression
-summary(cox.treatment.progression) # Treatment and progression
-summary(cox.ca1.progression) # Cyclin A1 and progression
-summary(cox.ca1pt1.progression) # Cyclin A1 & pT1 and progression
-# Evaluating the interaction between pT1 and Cyclin A1
-cox.ca1bypt1.progression <- coxph(surv.progression ~ ca1.positive.10*pt.biopsy, data = ca1) 
-summary(cox.ca1bypt1.progression)
-# Comparison of Model 1 (only pT1) vs. Model 2 (pT1 + Cyclin A1)
-# vs. Model 3 (only Cyclin A1) for tumor progression
-anova(cox.pt1.progression, cox.ca1pt1.progression) # Model 1 vs. Model 2
-anova(cox.ca1.progression, cox.ca1pt1.progression) # Model 3 vs. Model 2
+### Table 2: Hazard Ratios for Tumor Recurrence and Tumor Progression According to Pathologic Features at Biopsy and Cyclin A1 Immunohistochemical Expression in 149 Invasive High-Grade Urothelial Carcinomas
+* Hazard ratios for tumor recurrence and tumor progression
+```{r HR}
+# pT1 and recurrence
+hazard(surv.recurrence ~ pt.biopsy, data = ca1)
+# CIS and recurrence
+hazard(surv.recurrence ~ cis.biopsy, data = ca1)
+# Initial treatment and recurrence
+hazard(surv.recurrence ~ treatment, data = ca1)
+# Cyclin A1 and recurrence
+hazard(surv.recurrence ~ ca1.positive.10, data = ca1)
+# Cyclin A1 & pT1 at Biopsy and recurrence
+hazard(surv.recurrence ~ ca1.positive.10 + pt.biopsy, data = ca1)
+# pT1 and progression
+hazard(surv.progression ~ pt.biopsy, data = ca1)
+# CIS and progression
+hazard(surv.progression ~ cis.biopsy, data = ca1)
+# Initial treatment and progression
+hazard(surv.progression ~ treatment, data = ca1)
+# Cyclin A1 and progression
+hazard(surv.progression ~ ca1.positive.10, data = ca1)
+# Cyclin A1 & pT1 at Biopsy and progression
+hazard(surv.progression ~ ca1.positive.10 + pt.biopsy, data = ca1)
+# Interaction between pT1 and Cyclin A1
+hazard(surv.progression ~ ca1.positive.10*pt.biopsy, data = ca1) 
+```
+
+### Comparison of Model 1 (only pT1) vs. Model 2 (pT1 + Cyclin A1) vs. Model 3 (only Cyclin A1) for tumor progression
+```{r}
+model1 <- coxph(surv.progression ~ pt.biopsy, data = ca1)
+model2 <- coxph(surv.progression ~ pt.biopsy + ca1.positive.10, data = ca1)
+model3 <- coxph(surv.progression ~ ca1.positive.10, data = ca1)
+# Model 1 vs. Model 2
+anova(model1, model2)
+# Model 3 vs. Model 2
+anova(model3, model2) 
+```
